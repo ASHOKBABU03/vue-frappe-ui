@@ -43,7 +43,6 @@ Inside your bench directory:
 ```bash
 bench get-app https://github.com/NagariaHussain/doppio
 bench --site <site-name> install-app doppio
-bench restart
 ```
 
 ---
@@ -52,6 +51,8 @@ bench restart
 
 ```bash
 bench add-spa --app <your-app-name>
+yarn add frappe-ui
+yarn add -D tailwindcss postcss autoprefixer
 ```
 
 Prompts:
@@ -75,8 +76,8 @@ This automatically:
 
 ```bash
 cd <spa-folder>
-npm install
-npm run dev
+yarn install
+yarn dev
 ```
 
 Access in browser:
@@ -106,7 +107,6 @@ Choose only one Doppio method.
 ```bash
 bench get-app https://github.com/NagariaHussain/doppio
 bench --site <site-name> install-app doppio
-bench restart
 ```
 
 ---
@@ -128,9 +128,11 @@ You will be prompted for:
 
 ```bash
 cd <generated-folder>
-npm install
-npm run dev
+yarn install
+yarn dev
 ```
+
+
 
 Use this method when:
 
@@ -140,6 +142,50 @@ Use this method when:
 - Not building complex SPA routing
 
 ---
+
+---
+
+# ⚠ Common Issue (Frappe UI + Vite CSS Import Error)
+
+While using the **bench add-frappe-ui** method, you may encounter the following error:
+
+```
+[plugin:vite:css] [postcss] Missing "./src/style.css" specifier in "frappe-ui" package
+```
+
+### ✅ Cause
+
+This occurs because recent versions of **frappe-ui** changed internal file paths, but some starter templates still reference older paths.
+
+---
+
+### ✅ Solution
+
+Update the incorrect import paths using the following commands:
+
+```bash
+sed -i 's@frappe-ui/src/style.css@frappe-ui/style.css@g' frontend/src/index.css
+sed -i 's@frappe-ui/src/tailwind/preset@frappe-ui/tailwind@g' frontend/tailwind.config.js
+```
+
+---
+
+### 🔄 After Fix
+
+Restart the development server:
+
+```bash
+yarn dev
+```
+
+The application should now run without CSS resolution errors.
+
+---
+
+### 💡 Recommendation
+
+Always verify frappe-ui internal paths when upgrading versions, as starter templates may lag behind package updates.
+
 
 # METHOD 3: Manual Setup (Without Doppio)
 
@@ -158,7 +204,7 @@ Inside your custom app:
 cd apps/<your-app-name>
 npx degit netchampfaris/frappe-ui-starter frontend
 cd frontend
-npm install
+yarn install
 ```
 
 ---

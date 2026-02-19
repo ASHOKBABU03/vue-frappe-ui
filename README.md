@@ -143,8 +143,6 @@ Use this method when:
 
 ---
 
----
-
 # ⚠ Common Issue (Frappe UI + Vite CSS Import Error)
 
 While using the **bench add-frappe-ui** method, you may encounter the following error:
